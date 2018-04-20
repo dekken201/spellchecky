@@ -14,30 +14,32 @@ def load_words(filename):#nome do arquivo, com sua extensão
     except Exception as e:
         return str(e)
 
-def separate(dictionary):
-    for word in dictionary:
-        filename = str(len(word))+" words.txt"
-        try:
-            with open(listspath+filename,'a+') as f:
-                f.write(word+"\n")
-        except Exception as e:
-            return str(e)
+def checkRatio(str1, str2): #TESTA TODAS AS POSSIBILIDADES DE RATIO DO FUZZYWUZZY
+    bestRatio = 0
+    ratios = [fuzz.ratio(str1, str2), fuzz.partial_ratio(str1, str2), fuzz.token_sort_ratio(str1, str2),
+              fuzz.token_set_ratio(str1, str2)]
+    for ratio in ratios:
+        if ratio > bestRatio:
+            bestRatio = ratio
+    return bestRatio
 
-def test(word):
-    filename = str(len(word)) + " words.txt"
-    maiorRatio = 0
-    bestMatch = ""
-    try:
-        with open(listspath + filename, 'r') as f:
-            for line in f:
-                ratio = fuzz.ratio(word,line)
-                if (ratio > maiorRatio):
-                    bestMatch = [line,ratio]
-            print(bestMatch)
-    except Exception as e:
-        return str(e)
+def test(user_input):
+    input_size = len(user_input)
+    best_ratio = 0
+    english_words = load_words("english_dict.json")
+    if user_input not in english_words:
+        for word in english_words:
+            if (len(word) > (input_size +1)) or (len(word) < (input_size-1)):
+                pass
+            else:
+                ratio = checkRatio(user_input,word)
+                if ratio > best_ratio:
+                    print(word+"+"+str(ratio))
+                    bestMatch = word
+        print(bestMatch)
 
-#TO GENERATE THE LISTS BY NUMBER OF WORDS
-#separate(load_words("english_dict.json"))
 
-test("aaaaaa")
+test("aiir")
+
+
+
