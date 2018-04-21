@@ -1,45 +1,32 @@
-import json, os
+import json, os, distance, pickle
 from fuzzywuzzy import fuzz
 
 
 basepath = os.path.dirname(__file__)
 listspath = os.path.join(basepath,"..","lists\\")
 
-def load_words(filename):#nome do arquivo, com sua extensão
+def distance_function(str1,str2):
+    return distance.levenshtein(str1,str2)
+
+def load_words(filename):#nome do arquivo, sem extensão
     try:
-        filepath = (os.path.join(basepath,"..","dicts\\", filename))
-        with open(filepath,"r") as english_dictionary:
-            valid_words = json.load(english_dictionary)
-            return valid_words
+        filepath = (os.path.join(basepath,"..","dicts\\", filename+".json"))
+        with open(filepath,"r") as dictionary:
+            words = json.load(dictionary)
+            return words
     except Exception as e:
         return str(e)
 
-def checkRatio(str1, str2): #TESTA TODAS AS POSSIBILIDADES DE RATIO DO FUZZYWUZZY
-    bestRatio = 0
-    ratios = [fuzz.ratio(str1, str2), fuzz.partial_ratio(str1, str2), fuzz.token_sort_ratio(str1, str2),
-              fuzz.token_set_ratio(str1, str2)]
-    for ratio in ratios:
-        if ratio > bestRatio:
-            bestRatio = ratio
-    return bestRatio
-
-def test(user_input):
-    input_size = len(user_input)
-    best_ratio = 0
-    english_words = load_words("english_dict.json")
-    if user_input not in english_words:
-        for word in english_words:
-            if (len(word) > (input_size +1)) or (len(word) < (input_size-1)):
-                pass
-            else:
-                ratio = checkRatio(user_input,word)
-                if ratio > best_ratio:
-                    print(word+"+"+str(ratio))
-                    bestMatch = word
-        print(bestMatch)
+def pickle_dump(tree, filename):
+    try:
+        filepath = (os.path.join(basepath,"..","dicts\\", filename+".txt"))
+        with open(filepath, "wb") as pickling:
+            pickle.dump(tree, pickling)
+    except Exception as e:
+        return str(e)
 
 
-test("aiir")
-
-
-
+def pickle_load(filename):
+    filepath = (os.path.join(basepath, "..", "dicts\\", filename + ".txt"))
+    with open(filepath, "rb") as pickling:
+        return pickle.load(pickling)
