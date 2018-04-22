@@ -1,12 +1,12 @@
-import json, os, distance, pickle
-from fuzzywuzzy import fuzz
+import json, os, pickle, Levenshtein
+
 
 
 basepath = os.path.dirname(__file__)
 listspath = os.path.join(basepath,"..","lists\\")
 
 def distance_function(str1,str2):
-    return distance.levenshtein(str1,str2)
+    return Levenshtein.distance(str1,str2)
 
 def load_words(filename):#nome do arquivo, sem extensão
     try:
