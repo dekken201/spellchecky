@@ -5,8 +5,8 @@ Using this <a href="https://github.com/dwyl/english-words">awesome dictionary</a
 Since the addition into the tree is pretty slow(at least in my computer), I <a href="https://docs.python.org/3/library/pickle.html">pickled</a> the data structure for easier reutilization, so it doesn't have to load the whole tree everytime it runs. The dictionary has almost 500.000 words and the spell check is done in less than a second.
 
 # HOW TO:
-So, for it to work, you basically have to clone the repository and have <a href="
-https://github.com/ztane/python-Levenshtein">python-Levenshtein</a> installed(most obviously you'll already have "json", "os", "pickle" and "collections" as standard).
+So, for it to work, you basically have to clone the repository and have 
+<a href="https://github.com/ztane/python-Levenshtein">python-Levenshtein</a> installed(most obviously you'll already have "json", "os", "pickle" and "collections" as standard).
 
 This is kind of a tricky(at least was for me) library to install because it's implemented with C, and with Windows 10 and Python 3.6, it was a pain to make it work. It makes the distance calculations much faster than the pure python version, which is this <a href="https://pypi.org/project/Distance/">one</a>(which you can use with a couple tweaks, I'll explain later). In my machine, I had to actually install the whole Visual Studio package for it to work, because it requires a version of Visual C++ package that only comes with it(if anyone knows how to get that without installing Visual Studio, please tell me!).
 
